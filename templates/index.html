@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="center">
+        <div class="grid">
+            {% for item in data %}
+            <div class="card" style="background-color: {{item["colour"]["pastel"]}};">
+                <div class="column" style="gap: 10px;">
+                    <div class="column" style="gap: 0px;">
+                        <h3>{{item["title"]}}</h3>
+                        <p><b>{{item["artist"]}}</b></p>
+                        {% if item["timestamp"] %}
+                        <p>{{item["timestamp"]}}</p>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <a style="background-color: {{item['colour']['button']}};" href={{item["spotifyLink"]}}>Spotify</a>
+                        <a style="background-color: {{item['colour']['button']}};" href={{item["shazamLink"]}}>Shazam</a>
+                        <form name="{{item['title']}} {{item['artist']}}">
+                            <button style="background-color: {{item['colour']['button']}};" type="submit">Preview</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+</body>
+</html>
