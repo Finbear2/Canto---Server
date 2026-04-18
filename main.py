@@ -8,6 +8,8 @@ app = Quart(__name__)
 shazam = Shazam()
 
 secret = "Fish"
+muted = False
+name = "ERROR"
 
 DB = "database/songs.db"
 
@@ -133,6 +135,47 @@ async def apiCall():
     result = await shazam.recognize_song(audio)
 
     return jsonify(result)
+
+# STATUS
+@app.route("/status", methods=["POST"])
+async def statusCall():
+    global name
+
+    key = request.headers.get("key")
+    if key != secret:
+        return jsonify({"error": "invalid key"}), 401
+
+    key = request.headers.get("boot")
+    if key == "true":
+        name = request.headers.get("name")
+
+    data = {}
+
+    data["muted"] = muted
+    data["name"] = name
+
+    return jsonify(data)
+
+# # STATUS
+# @app.route("/status", methods=["POST"])
+# async def statusCall():
+#     global name
+
+#     key = request.headers.get("key")
+#     if key != secret:
+#         return jsonify({"error": "invalid key"}), 401
+
+#     key = request.headers.get("boot")
+#     if key == "true":
+#         name = request.headers.get("name")
+
+#     data = {}
+
+#     data["muted"] = muted
+#     data["name"] = name
+
+#     return jsonify(data)
+
 
 if __name__ == "__main__":
 
